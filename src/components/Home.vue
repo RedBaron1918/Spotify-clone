@@ -1,264 +1,39 @@
 <template>
   <div class="bg-dark h-screen">
     <div class="flex" style="height: 88vh">
-      <div class="w-56 bg-black h-full flex-none">
-        <div class="p-6">
-          <img src="../assets/spot-white-words.png" class="h-10" />
-        </div>
-        <div class="mx-2 mb-5">
-          <button
-            v-for="page in pages"
-            :key="page.id"
-            @click="setID = page.id"
-            :class="`w-full text-sm font-semibold rounded px-3 py-2 flex items-center justify-start ${
-              setID === page.id ? 'bg-light text-white' : 'text-lightest'
-            }`"
-          >
-            <i :class="`${page.icon} m-2`"></i>
-            <p>{{ page.name }}</p>
-          </button>
-        </div>
-        <div class="mx-5">
-          <h1 class="text-xs text-lightest tracking-widest uppercase mb-3">
-            PlayList
-          </h1>
-          <button
-            class="flex item-center justify-start opacity-75 hover:opacity-100 mb-2"
-          >
-            <i
-              class="fa-solid fa-plus"
-              style="color: white; font-size: 1.3rem"
-            ></i>
-            <p class="text-sm text-white font-semibold ml-2">Create Playlist</p>
-          </button>
-
-          <button
-            class="flex item-center justify-start opacity-75 hover:opacity-100"
-          >
-            <i
-              class="fa-solid fa-heart"
-              style="color: white; font-size: 1.3rem"
-            ></i>
-
-            <p class="text-sm text-white font-semibold ml-2">Favorites</p>
-          </button>
-          <div class="h-px w-full bg-light my-3"></div>
-        </div>
-
-        <div class="mx-5">
-          <div
-            class="w-full h-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-500"
-          >
-            <p
-              v-for="(album, index) in albums"
-              class="text-lightest hover:text-white text-sm py-1"
-              :key="index"
-            >
-              {{ album.name }}
-            </p>
-          </div>
-          <button
-            class="flex items-center justify-start text-lightest text-sm hover:text-white py-2"
-          >
-            <i class="fa-solid fa-circle-arrow-down mr-2"></i>
-            <p class="text-sm font-semibold">Install app</p>
-          </button>
-        </div>
-        <!-- make image here if you can if not then just leave it my brain hurts -->
-
-        <!--  -->
-      </div>
-
+      <Navbar :pages="pages" :albums="albums" />
       <div class="w-full h-full relative overflow-y-scroll">
         <!-- header -->
-        <div
-          class="w-full top-0 p-2 flex items-center justify-between py-4 px-6 bg-dark"
-        >
-          <div class="flex items-center">
-            <button class="rounded-full bg-black w-8 h-8">
-              <i class="fa-solid fa-angle-left" style="color: white"></i>
-            </button>
-            <button class="rounded-full bg-black w-8 h-8 ml-2">
-              <i class="fa-solid fa-angle-right" style="color: white"></i>
-            </button>
-          </div>
-
-          <div class="relative">
-            <button
-              @click="ShowDropDown = !ShowDropDown"
-              class="bg-light rounded-full py-1 px-2 flex items-center"
-            >
-              <img src="../assets/prof.jpg" class="rounded-full h-6 w-6 mr-2" />
-              <p class="text-white font-semibold text-xs mr-3">Kote</p>
-              <i
-                v-if="!ShowDropDown"
-                class="fa-solid fa-angle-down text-white"
-              ></i>
-              <i v-else class="fa-solid fa-angle-up text-white"></i>
-            </button>
-
-            <div
-              v-if="ShowDropDown"
-              class="absolute bg-light w-full rounded mt-1"
-            >
-              <button
-                class="py-2 text-lightest text-sm w-full hover:text-white border-b border-lightest"
-              >
-                Account
-              </button>
-
-              <button
-                class="py-2 text-sm text-lightest w-full hover:text-white"
-              >
-                Log out
-              </button>
-            </div>
-          </div>
-        </div>
+        <Header :ShowDropDown="ShowDropDown" />
         <!-- cards -->
-        <div class="px-6 py-3">
-          <div class="flex items-center justify-between">
-            <h1
-              class="text-2xl pl-2 font-semibold text-white tracking-wider hover:underline"
-            >
-              Recently Played
-            </h1>
-            <h2
-              class="text-xs pr-6 pt-4 mb-3 text-lightest uppercase tracking-wider hover:underline"
-            >
-              See All
-            </h2>
-          </div>
-
-          <div class="w-full flex flex-wrap">
-            <div
-              v-for="song in recents"
-              :key="song.src"
-              class="p-2 w-48 flex relative"
-            >
-              <div
-                class="absolute w-full h-full flex items-end justify-end p-8 opacity-0 hover:opacity-100"
-              >
-                <div
-                  class="bg-green rounded-full h-10 w-10 flex items-center justify-center"
-                >
-                  <button @click="play(song)">
-                    <i class="fa-solid fa-play text-white text-2xl"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="bg-light w-full h-auto p-5 rounded-lg shadow-md">
-                <img
-                  :src="song.image"
-                  alt=""
-                  class="h-auto w-full shadow mb-2 rounded-full"
-                />
-                <h2 class="text-sm font-semibold text-white tracking-wide">
-                  {{ song.title }}
-                </h2>
-                <h3 class="text-xs text-lightest tracking-wide">
-                  {{ song.artist }}
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="px-1 py-3">
-            <div>
-              <h1
-                class="text-2xl pl-2 font-semibold text-white tracking-wider hover:underline"
-              >
-                For me
-              </h1>
-            </div>
-
-            <div class="w-full flex flex-wrap">
-              <div
-                v-for="song in forMe"
-                :key="song.src"
-                class="p-2 w-48 flex relative"
-              >
-                <div
-                  class="absolute w-full h-full flex items-end justify-end p-8 opacity-0 hover:opacity-100"
-                >
-                  <div
-                    class="bg-green rounded-full h-10 w-10 flex items-center justify-center"
-                  >
-                    <button @click="play(song)">
-                      <i class="fa-solid fa-play text-white text-2xl"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="bg-light w-full h-auto p-5 rounded-lg shadow-md">
-                  <img
-                    :src="song.image"
-                    alt=""
-                    class="h-auto w-full shadow mb-2 rounded-full"
-                  />
-                  <h2 class="text-sm font-semibold text-white tracking-wide">
-                    {{ song.title }}
-                  </h2>
-                  <h3 class="text-xs text-lightest tracking-wide">
-                    {{ song.artist }}
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Cards :recents="recents" :forMe="forMe" @play="play" />
       </div>
-      <!-- end of header -->
 
+      <!-- end of header -->
       <!-- play bar -->
     </div>
-    <div
-      class="w-full flex items-center justify-between px-3 b-light"
-      style="height: 12vh"
-    >
-      <div class="flex items-center">
-        <div>
-          <h1 class="text-sm text-white tracking-wide mb-1">
-            {{ songName }}
-          </h1>
-          <h2 class="text-xs text-lightest tracking-wide">{{ songArtist }}</h2>
-        </div>
-        <i class="fa-solid fa-heart text-base mx-4 text-green"></i>
-      </div>
-      <div>
-        <div class="flex items-center">
-          <button @click="prev" class="text-lg text-lightest hover:text-white">
-            <i class="fa-solid fa-backward"></i>
-          </button>
-          <button
-            @click="pause"
-            class="text-3xl text-lightest hover:text-white m-5"
-          >
-            <i class="fa-solid fa-circle-play"></i>
-          </button>
-          <button @click="next" class="text-lg text-lightest hover:text-white">
-            <i class="fa-solid fa-forward"></i>
-          </button>
-        </div>
-      </div>
-      <div class="flex items-center">
-        <i class="fa-solid fa-volume-high text-base text-lightest"></i>
-        <div class="ml-2 rounded-full mr-2">
-          <input
-            type="range"
-            @change="change"
-            class="w-20 mt-2 h1 text-black"
-          />
-        </div>
-      </div>
-    </div>
+    <Footer
+      :songName="songName"
+      :songArtist="songArtist"
+      :isPlaying="isPlaying"
+      @next="next"
+      @pause="pause"
+      @prev="prev"
+      @changeing="changee"
+    />
   </div>
 </template>
 
 <script>
+import Footer from "./Footer.vue";
+import Header from "./Header.vue";
+import Navbar from "./Navbar.vue";
+import Cards from "./Cards.vue";
 export default {
   name: "App",
 
   methods: {
-    change(e) {
+    changee(e) {
       this.player.volume = e.currentTarget.value / 100;
     },
     getImgUrl(imagePath) {
@@ -398,7 +173,6 @@ export default {
           icon: "fa-solid fa-chart-simple",
         },
       ],
-      setID: "home",
 
       albums: [
         {
@@ -422,7 +196,7 @@ export default {
       ],
     };
   },
-  components: {},
+  components: { Navbar, Header, Cards, Footer },
   created() {
     this.current = this.recents[this.index];
     this.player.src = this.current.src;
