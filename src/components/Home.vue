@@ -241,8 +241,12 @@
       </div>
       <div class="flex items-center">
         <i class="fa-solid fa-volume-high text-base text-lightest"></i>
-        <div class="w-20 ml-3 rounded-full h-1 mb-4">
-          <input type="range" @change="change" class="w-11 h1" />
+        <div class="ml-2 rounded-full mr-2">
+          <input
+            type="range"
+            @change="change"
+            class="w-20 mt-2 h1 text-black"
+          />
         </div>
       </div>
     </div>
@@ -308,8 +312,8 @@ export default {
       index: 0,
       isPlaying: false,
       player: new Audio(),
-      songName: "",
-      songArtist: "",
+      songName: "staying alive",
+      songArtist: "Bee Gees",
       recents: [
         {
           title: "staying alive",
@@ -419,11 +423,11 @@ export default {
     };
   },
   components: {},
-  // created() {
-  //   this.current = this.songs[this.index];
-  //   this.player.src = this.current.src;
-  //   //this.player.play();
-  // },
+  created() {
+    this.current = this.recents[this.index];
+    this.player.src = this.current.src;
+    //this.player.play();
+  },
 };
 </script>
 
