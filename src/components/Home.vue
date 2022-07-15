@@ -72,7 +72,7 @@
       <div class="w-full h-full relative overflow-y-scroll">
         <!-- header -->
         <div
-          class="w-full sticky top-0 p-2 flex items-center justify-between py-4 px-6 bg-dark"
+          class="w-full top-0 p-2 flex items-center justify-between py-4 px-6 bg-dark"
         >
           <div class="flex items-center">
             <button class="rounded-full bg-black w-8 h-8">
@@ -132,8 +132,8 @@
 
           <div class="w-full flex flex-wrap">
             <div
-              v-for="(song, index) in recents"
-              :key="index"
+              v-for="song in recents"
+              :key="song.src"
               class="p-2 w-48 flex relative"
             >
               <div
@@ -142,7 +142,9 @@
                 <div
                   class="bg-green rounded-full h-10 w-10 flex items-center justify-center"
                 >
-                  <i class="fa-solid fa-play text-white text-2xl"></i>
+                  <button @click="play(song)">
+                    <i class="fa-solid fa-play text-white text-2xl"></i>
+                  </button>
                 </div>
               </div>
               <div class="bg-light w-full h-auto p-5 rounded-lg shadow-md">
@@ -171,8 +173,8 @@
 
             <div class="w-full flex flex-wrap">
               <div
-                v-for="(song, index) in forMe"
-                :key="index"
+                v-for="song in forMe"
+                :key="song.src"
                 class="p-2 w-48 flex relative"
               >
                 <div
@@ -181,7 +183,9 @@
                   <div
                     class="bg-green rounded-full h-10 w-10 flex items-center justify-center"
                   >
-                    <i class="fa-solid fa-play text-white text-2xl"></i>
+                    <button @click="play(song)">
+                      <i class="fa-solid fa-play text-white text-2xl"></i>
+                    </button>
                   </div>
                 </div>
                 <div class="bg-light w-full h-auto p-5 rounded-lg shadow-md">
@@ -213,28 +217,33 @@
       <div class="flex items-center">
         <div>
           <h1 class="text-sm text-white tracking-wide mb-1">
-            Song Name goes Here!
+            {{ songName }}
           </h1>
-          <h2 class="text-xs text-lightest tracking-wide">Artist goes here!</h2>
+          <h2 class="text-xs text-lightest tracking-wide">{{ songArtist }}</h2>
         </div>
         <i class="fa-solid fa-heart text-base mx-4 text-green"></i>
       </div>
       <div>
         <div class="flex items-center">
-          <button class="text-lg text-lightest hover:text-white">
+          <button @click="prev" class="text-lg text-lightest hover:text-white">
             <i class="fa-solid fa-backward"></i>
           </button>
-          <button class="text-3xl text-lightest hover:text-white m-5">
+          <button
+            @click="pause"
+            class="text-3xl text-lightest hover:text-white m-5"
+          >
             <i class="fa-solid fa-circle-play"></i>
           </button>
-          <button class="text-lg text-lightest hover:text-white">
+          <button @click="next" class="text-lg text-lightest hover:text-white">
             <i class="fa-solid fa-forward"></i>
           </button>
         </div>
       </div>
       <div class="flex items-center">
         <i class="fa-solid fa-volume-high text-base text-lightest"></i>
-        <div class="w-20 ml-3 bg-lightest rounded-full h-1"></div>
+        <div class="w-20 ml-3 rounded-full h-1 mb-4">
+          <input type="range" @change="change" class="w-11 h1" />
+        </div>
       </div>
     </div>
   </div>
@@ -243,13 +252,64 @@
 <script>
 export default {
   name: "App",
+
   methods: {
+    change(e) {
+      this.player.volume = e.currentTarget.value / 100;
+    },
     getImgUrl(imagePath) {
       return require(imagePath);
+    },
+    play(song) {
+      if (typeof song.src != undefined) {
+        this.current = song;
+
+        this.player.src = this.current.src;
+        this.songName = this.current.title;
+        this.songArtist = this.current.artist;
+      }
+      this.player.play();
+      this.player.addEventListener(
+        "ended",
+        function () {
+          this.next();
+        }.bind(this)
+      );
+      this.isPlaying = true;
+    },
+    pause() {
+      this.isPlaying = !this.isPlaying;
+      if (!this.isPlaying) {
+        this.player.pause();
+      } else {
+        this.player.play();
+      }
+    },
+    next() {
+      this.index++;
+      if (this.index > this.recents.length - 1) {
+        this.index = 0;
+      }
+      this.current = this.recents[this.index];
+      this.play(this.current);
+    },
+    prev() {
+      this.index--;
+      if (this.index < 0) {
+        this.index = this.recents.length - 1;
+      }
+      this.current = this.recents[this.index];
+      this.play(this.current);
     },
   },
   data() {
     return {
+      current: {},
+      index: 0,
+      isPlaying: false,
+      player: new Audio(),
+      songName: "",
+      songArtist: "",
       recents: [
         {
           title: "staying alive",
@@ -359,6 +419,11 @@ export default {
     };
   },
   components: {},
+  // created() {
+  //   this.current = this.songs[this.index];
+  //   this.player.src = this.current.src;
+  //   //this.player.play();
+  // },
 };
 </script>
 
