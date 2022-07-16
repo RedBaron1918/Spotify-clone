@@ -30,6 +30,7 @@
             </button>
           </div>
         </div>
+
         <div class="bg-light w-full h-auto p-5 rounded-lg shadow-md">
           <img
             :src="song.image"
@@ -93,6 +94,9 @@
 <script>
 export default {
   props: ["recents", "forMe"],
+  data() {
+    return {};
+  },
 };
 </script>
 

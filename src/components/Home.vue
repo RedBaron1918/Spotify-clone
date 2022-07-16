@@ -6,7 +6,12 @@
         <!-- header -->
         <Header :ShowDropDown="ShowDropDown" />
         <!-- cards -->
-        <Cards :recents="recents" :forMe="forMe" @play="play" />
+        <Cards
+          :recents="recents"
+          :forMe="forMe"
+          @play="play"
+          @toggle="toggle"
+        />
       </div>
 
       <!-- end of header -->
@@ -20,6 +25,8 @@
       @pause="pause"
       @prev="prev"
       @changeing="changee"
+      :current="current"
+      @toggle="toggle"
     />
   </div>
 </template>
@@ -80,7 +87,21 @@ export default {
       this.current = this.recents[this.index];
       this.play(this.current);
     },
+    toggle() {
+      this.current.favorite = !this.current.favorite;
+      if (this.current.favorite) {
+        this.AddingFavorites.push(this.current);
+      } else {
+        this.AddingFavorites.splice(this.current, 1);
+      }
+      console.log(this.AddingFavorites);
+    },
   },
+  // provide() {
+  //   return {
+  //     AddingFavorites: this.AddingFavorites,
+  //   };
+  // },
   data() {
     return {
       current: {},
@@ -89,10 +110,12 @@ export default {
       player: new Audio(),
       songName: "staying alive",
       songArtist: "Bee Gees",
+      AddingFavorites: [],
       recents: [
         {
           title: "staying alive",
           artist: "Bee Gees",
+          favorite: false,
           image: require("../assets/images/bee.jpeg"),
           src: require("../assets/music/recent/stayingalive.mp3"),
         },
@@ -100,11 +123,13 @@ export default {
           title: "Hold The Line",
           artist: "Toto",
           image: require("../assets/images/tot.jpeg"),
+          favorite: false,
           src: require("../assets/music/recent/HoldTheLine.mp3"),
         },
         {
           title: "StillStanding",
           artist: "Elton John",
+          favorite: false,
           image: require("../assets/images/elt.jpeg"),
           src: require("../assets/music/recent/StillStanding.mp3"),
         },
@@ -112,12 +137,14 @@ export default {
         {
           title: "BabyComeBack",
           artist: "Player",
+          favorite: false,
           image: require("../assets/images/player.jpeg"),
           src: require("../assets/music/recent/BabyComeBack.mp3"),
         },
         {
           title: "What You Won't Do for Love",
           artist: "Bobby Caldwell",
+          favorite: false,
           image: require("../assets/images/bobby.jpeg"),
           src: require("../assets/music/recent/WhatYouWontDoForLove.mp3"),
         },
@@ -126,18 +153,21 @@ export default {
         {
           title: "Hells Bells",
           artist: "AC/DC",
+          favorite: false,
           image: require("../assets/images/ac.jpeg"),
           src: require("../assets/music/forme/acdc.mp3"),
         },
         {
           title: "The Chain",
           artist: "Fleetwood",
+          favorite: false,
           image: require("../assets/images/fleet.jpeg"),
           src: require("../assets/music/forme/fleet.mp3"),
         },
         {
           title: "From the Watch Tower",
           artist: "jimi hendrix",
+          favorite: false,
           image: require("../assets/images/henrix.jpeg"),
           src: require("../assets/music/forme/jimi.mp3"),
         },
@@ -145,12 +175,14 @@ export default {
         {
           title: "I was Made For Loving",
           artist: "KISS",
+          favorite: false,
           image: require("../assets/images/kiss.jpeg"),
           src: require("../assets/music/forme/kiss.mp3"),
         },
         {
           title: "Take Me To The Top",
           artist: "Mötley Crüe",
+          favorite: false,
           image: require("../assets/images/motley.jpeg"),
           src: require("../assets/music/forme/motley.mp3"),
         },
@@ -182,7 +214,7 @@ export default {
           name: "Bobby Caldwell",
         },
         {
-          name: "Queen & David Bowie",
+          name: "Mötley Crüe",
         },
         {
           name: "Elton John",

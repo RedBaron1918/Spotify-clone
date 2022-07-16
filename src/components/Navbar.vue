@@ -34,8 +34,9 @@
           class="fa-solid fa-heart"
           style="color: white; font-size: 1.3rem"
         ></i>
-
-        <p class="text-sm text-white font-semibold ml-2">Favorites</p>
+        <router-link to="/about" class="text-sm text-white font-semibold ml-2"
+          >Favorites</router-link
+        >
       </button>
       <div class="h-px w-full bg-light my-3"></div>
     </div>

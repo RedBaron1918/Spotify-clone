@@ -10,7 +10,13 @@
         </h1>
         <h2 class="text-xs text-lightest tracking-wide">{{ songArtist }}</h2>
       </div>
-      <i class="fa-solid fa-heart text-base mx-4 text-green"></i>
+      <button @click="$emit('toggle')">
+        <i
+          v-if="!current.favorite"
+          class="fa-solid fa-heart text-base mx-4 text-black"
+        ></i>
+        <i v-else class="fa-solid fa-heart text-base mx-4 text-green"></i>
+      </button>
     </div>
     <div>
       <div class="flex items-center">
@@ -50,7 +56,7 @@
 
 <script>
 export default {
-  props: ["songName", "songArtist", "isPlaying"],
+  props: ["songName", "songArtist", "isPlaying", "current"],
   methods: {
     changeing(e) {
       this.$emit("changeing", e);
