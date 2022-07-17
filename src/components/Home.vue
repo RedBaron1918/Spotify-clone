@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark h-screen">
     <div class="flex" style="height: 88vh">
-      <Navbar :pages="pages" :albums="albums" />
+      <Navbar :pages="pages" :albums="albums" @pauseMusic="pauseMusic" />
       <div class="w-full h-full relative overflow-y-scroll">
         <!-- header -->
         <Header :ShowDropDown="ShowDropDown" />
@@ -40,6 +40,9 @@ export default {
   name: "App",
 
   methods: {
+    pauseMusic() {
+      this.player.pause();
+    },
     changee(e) {
       this.player.volume = e.currentTarget.value / 100;
     },
@@ -95,13 +98,10 @@ export default {
         this.AddingFavorites.splice(this.current, 1);
       }
       console.log(this.AddingFavorites);
+      this.$emit("addFavorites", this.AddingFavorites);
     },
   },
-  // provide() {
-  //   return {
-  //     AddingFavorites: this.AddingFavorites,
-  //   };
-  // },
+
   data() {
     return {
       current: {},

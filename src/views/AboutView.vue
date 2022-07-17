@@ -1,9 +1,15 @@
 <template>
-  <div class="about"></div>
+  <FavoritePage :favorites="favorites" />
 </template>
 
 <script>
+import FavoritePage from "../components/FavoritePage.vue";
+
 export default {
-  components: {},
+  components: { FavoritePage },
+  props: ["favorites"],
+  created() {
+    console.log(this.favorites);
+  },
 };
 </script>

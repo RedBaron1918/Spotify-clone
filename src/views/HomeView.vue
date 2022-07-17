@@ -1,5 +1,5 @@
 <template>
-  <Home />
+  <Home @addFavorites="addFavorites" />
 </template>
 
 <script>
@@ -10,6 +10,11 @@ export default {
   name: "HomeView",
   components: {
     Home,
+  },
+  methods: {
+    addFavorites(e) {
+      this.$emit("addFavorites", e);
+    },
   },
 };
 </script>

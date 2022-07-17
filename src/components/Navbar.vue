@@ -34,7 +34,10 @@
           class="fa-solid fa-heart"
           style="color: white; font-size: 1.3rem"
         ></i>
-        <router-link to="/about" class="text-sm text-white font-semibold ml-2"
+        <router-link
+          to="/about"
+          class="text-sm text-white font-semibold ml-2"
+          @click="$emit('pauseMusic')"
           >Favorites</router-link
         >
       </button>
