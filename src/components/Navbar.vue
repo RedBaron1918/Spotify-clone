@@ -7,7 +7,7 @@
       <button
         v-for="page in pages"
         :key="page.id"
-        @click="setID = page.id"
+        @click="(setID = page.id), gethome(page.id)"
         :class="`w-full text-sm font-semibold rounded px-3 py-2 flex items-center justify-start ${
           setID === page.id ? 'bg-light text-white' : 'text-lightest'
         }`"
@@ -76,6 +76,11 @@ export default {
     return {
       setID: "home",
     };
+  },
+  methods: {
+    gethome(id) {
+      this.$emit("gethome", id);
+    },
   },
 };
 </script>

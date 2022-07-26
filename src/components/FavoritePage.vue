@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark h-screen">
     <div class="flex" style="height: 88vh">
-      <Navbar :pages="pages" :albums="albums" />
+      <Navbar :pages="pages" :albums="albums" @gethome="gethome" />
       <div class="w-full h-full relative overflow-y-scroll">
         <!-- header -->
         <Header :ShowDropDown="ShowDropDown" />
@@ -31,6 +31,7 @@ import FavoriteFooter from "./FavoriteFooter.vue";
 import Header from "./Header.vue";
 import Navbar from "./Navbar.vue";
 import FavoriteCards from "./FavoriteCards.vue";
+
 export default {
   props: ["favorites"],
   name: "App",
@@ -89,6 +90,11 @@ export default {
       });
       this.player.pause();
       this.next();
+    },
+    gethome(id) {
+      if (id == "home") {
+        this.$router.push("/");
+      }
     },
   },
 
