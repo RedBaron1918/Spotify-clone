@@ -10,7 +10,7 @@
         </h1>
         <h2 class="text-xs text-lightest tracking-wide">{{ songArtist }}</h2>
       </div>
-      <button @click="$emit('toggle')">
+      <button @click="$emit('toggle', current)">
         <i
           v-if="!current.favorite"
           class="fa-solid fa-heart text-base mx-4 text-black"

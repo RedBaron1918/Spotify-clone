@@ -12,7 +12,7 @@
       <!-- end of header -->
       <!-- play bar -->
     </div>
-    <FavoriteFooter
+    <Footer
       :songName="songName"
       :songArtist="songArtist"
       :isPlaying="isPlaying"
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import FavoriteFooter from "./FavoriteFooter.vue";
+import Footer from "./Footer.vue";
 import Header from "./Header.vue";
 import Navbar from "./Navbar.vue";
 import FavoriteCards from "./FavoriteCards.vue";
@@ -149,7 +149,7 @@ export default {
       ],
     };
   },
-  components: { Navbar, Header, FavoriteCards, FavoriteFooter },
+  components: { Navbar, Header, FavoriteCards, Footer },
 };
 </script>
 
